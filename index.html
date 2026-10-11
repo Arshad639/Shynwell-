@@ -709,17 +709,21 @@ async function updateOrder() {
   } catch (e) { toast(e.message, true); }
   finally { saving = false; $('updBtn').disabled = false; $('updTxt').textContent = 'Save / update changes'; $('updIco').className = 'fa-solid fa-floppy-disk'; }
 }
-async function updateOrder() {
-  ...
-  finally { saving = false; $('updBtn').disabled = false; ... }
-}
-                                   <-- blank line
-
-async function deleteOrder() {     <-- your pasted code starts here
-  ...
-}                                  <-- your pasted code ends here
-
-/* ============ AMAR: ANALYTICS ENGINE ============ */
+async function deleteOrder() {
+  if (!found || saving) return;
+  if (!confirm('Are you sure you want to permanently delete this order?')) return;
+  const orderId = found['Order ID'];
+  saving = true; $('delBtn').disabled = true; $('delTxt').textContent = 'Deleting...';$('delIco').className = 'fa-solid fa-spinner fa-spin';
+  try {
+    const res = await fetch(`${SUPA.url}/rest/v1/${SUPA.table}?order_id=eq.${encodeURIComponent(orderId)}`, {method: 'DELETE', headers: supaHeaders({Prefer: 'return=representation'})});
+    if (!res.ok) throw new Error('Delete failed: ' + await supaErr(res));
+    if (!(await res.json()).length) throw new Error('No matching record in Supabase, or the delete policy is missing');
+    toast('Order permanently deleted successfully');
+    found = null; supaRow = null; $('lookBox').classList.add('hidden');$('lookLinks').classList.add('hidden'); $('searchId').value = '';$('lookMsg').textContent = ''; loadOrders();
+  } catch (e) { toast(e.message, true); }
+  finally { saving = false; $('delBtn').disabled = false; $('delTxt').textContent = 'Delete Order';$('delIco').className = 'fa-solid fa-trash'; }
+     }
+                               
 /* ============ AMAR: ANALYTICS ENGINE ============ */
 const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'], MN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const dOf = o => String(o['Invoice Date'] || o.Timestamp || '').slice(0, 10);
