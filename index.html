@@ -255,6 +255,7 @@ main>section,.attcard{min-width:0;max-width:100%}
       <p class="mt-4 text-sm" style="color:var(--mut)">Net profit (Credited - Original)</p>
       <p id="liveB" class="serif text-3xl font-bold" style="color:var(--em);text-shadow:0 0 18px currentColor">Rs 0.00</p>
       <button id="updBtn" class="btn btn-gold w-full mt-4" onclick="updateOrder()"><i id="updIco" class="fa-solid fa-floppy-disk"></i><span id="updTxt">Save / update changes</span></button>
+     <button id="delBtn" class="btn w-full mt-3" style="background:linear-gradient(135deg,#ff2d55,#c1121f);color:#fff" onclick="deleteOrder()"><i id="delIco" class="fa-solid fa-trash"></i><span id="delTxt">Delete Order</span></button>
     </div>
   </section>
 </main>
@@ -708,7 +709,17 @@ async function updateOrder() {
   } catch (e) { toast(e.message, true); }
   finally { saving = false; $('updBtn').disabled = false; $('updTxt').textContent = 'Save / update changes'; $('updIco').className = 'fa-solid fa-floppy-disk'; }
 }
+async function updateOrder() {
+  ...
+  finally { saving = false; $('updBtn').disabled = false; ... }
+}
+                                   <-- blank line
 
+async function deleteOrder() {     <-- your pasted code starts here
+  ...
+}                                  <-- your pasted code ends here
+
+/* ============ AMAR: ANALYTICS ENGINE ============ */
 /* ============ AMAR: ANALYTICS ENGINE ============ */
 const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'], MN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const dOf = o => String(o['Invoice Date'] || o.Timestamp || '').slice(0, 10);
